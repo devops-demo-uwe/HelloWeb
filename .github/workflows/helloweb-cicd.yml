@@ -18,29 +18,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     #checkout the repository
-    - uses: actions/checkout@v2
-    #prepare runner for desired .net version SDK
+    - name: Clone Repo
+      uses: actions/checkout@v2
+    # prepare runner for desired .net version SDK
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '8.0.x'
         include-prerelease: false
-    #Build/Test/Publish the .net project
+    # Build / Test / Publish the .NET project
     - name: Build with dotnet
       run: dotnet build ./HelloWeb.sln --configuration Release
     #- name: Test with dotnet
     #  run: dotnet test ./eShopOnWeb.sln --configuration Release
-    - name: dotnet publish
+    - name: Package with dotnet
       run: dotnet publish ./HelloWeb.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
     # upload the published website code artifacts
-    - name: Upload artifact for deployment job
+    - name: Upload Artifact for Deployment Job (App)
       uses: actions/upload-artifact@v3
       with:
         name: .net-app
         path: ${{env.DOTNET_ROOT}}/myapp
         
     # upload the bicep template as artifacts for next job
-    - name: Upload artifact for deployment job
+    - name: Upload Artifact for Deployment Job (Bicep)
       uses: actions/upload-artifact@v3
       with:
         name: bicep-templates
@@ -55,14 +56,14 @@ jobs:
     steps:
     
     #Download the publish files created in previous job
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v3
+    - name: Download Artifact from Build Job (App)
+      uses: actions/download-artifact@v3 
       with:
         name: .net-app
         path: .net-app
   
     #Download the bicep templates from previous job
-    - name: Download artifact from build job
+    - name: Download artifact from Build Job (Bicep)
       uses: actions/download-artifact@v3
       with:
         name: bicep-templates
@@ -75,10 +76,11 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
            
     # Deploy Azure WebApp using Bicep file
-    - name: deploy
+    - name: Deploy Bicep Template
       uses: azure/arm-deploy@v1
       with:
         scope: subscription
+        region: westeurope
         subscriptionId: ${{ env.SUBSCRIPTION-ID }}
         template: bicep-templates/webapp-rg.bicep
         parameters: 'webAppName=${{ env.WEBAPP-NAME }} resourceGroupName=${{ env.RESOURCE-GROUP }} location=${{ env.LOCATION }}'

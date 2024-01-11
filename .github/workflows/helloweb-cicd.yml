@@ -74,7 +74,6 @@ jobs:
       with:
         scope: subscription
         deploymentName: HelloWeb-Deployment
-        deploymentMode: Complete 
         region: westeurope
         subscriptionId: ${{ env.SUBSCRIPTION-ID }}
         template: bicep-templates/webapp-rg.bicep

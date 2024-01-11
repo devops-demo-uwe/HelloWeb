@@ -5,7 +5,7 @@ on: [push, workflow_dispatch]
 
 # Environment variables 
 env:
-  RESOURCE-GROUP: rgDemoEShopOnWeb
+  RESOURCE-GROUP: rgDemoHelloWeb
   LOCATION: westeurope
   TEMPLATE-PATH: .azure/bicep/
   SUBSCRIPTION-ID: 961f09e9-f925-4a31-a33b-aaeedd12630c

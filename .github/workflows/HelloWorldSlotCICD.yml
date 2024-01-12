@@ -10,29 +10,33 @@ env:
   TEMPLATE-PATH: .azure/bicep/
   SUBSCRIPTION-ID: 961f09e9-f925-4a31-a33b-aaeedd12630c
   WEBAPP-NAME: app-helloweb-uwe
+  WEBAPP_PACKAGE_PATH: './published'
 
 # Jobs
 jobs:
   #Build, test and publish .net web project in repository
   buildanddeploy:
     name: Build and Deploy to Staging
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
     steps:
+    
     #checkout the repository
     - name: Clone Repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2     
     # prepare runner for desired .net version SDK
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '8.0.x'
         include-prerelease: false
+        
     # Build and Publish the .NET project
-    - name: Build with dotnet
-      run: dotnet build ./HelloWeb.sln --configuration Release
-
-    - name: Package with dotnet
-      run: dotnet publish ./HelloWeb.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+    - name: Restore 
+      run: dotnet restore 
+    - name: Build 
+      run: dotnet build --configuration Release --no-restore
+    - name: Package 
+      run: dotnet publish --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
               
     # Login in your azure subscription using a service principal (credentials stored as GitHub Secret in repo)
     - name: Azure Login
@@ -46,4 +50,4 @@ jobs:
       with:
         app-name: ${{ env.WEBAPP-NAME  }}
         slot-name: staging
-        package: ${{env.DOTNET_ROOT}}/myapp
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}

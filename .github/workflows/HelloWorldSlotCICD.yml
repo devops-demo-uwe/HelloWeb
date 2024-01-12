@@ -45,6 +45,5 @@ jobs:
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WEBAPP-NAME  }}
+        slot-name: staging
         package: ${{env.DOTNET_ROOT}}/myapp
-        slot: staging
-        

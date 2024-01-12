@@ -1,5 +1,5 @@
 param location string = 'westeurope'
-param webAppName string = 'app-helloweb'
+param webAppName string = 'app-helloweb-uwe'
 param appServicePlanName string = 'plan-helloweb'
 param sku string = 'S1'
 
@@ -34,7 +34,7 @@ resource deploymentSlot 'Microsoft.Web/sites/slots@2020-06-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      linuxFxVersion: 'DOTNETCORE|7.0'
+      linuxFxVersion: 'DOTNETCORE|8.0'
     }
   }
 }

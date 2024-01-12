@@ -1,4 +1,4 @@
-param webAppName string = 'app-helloweb'
+param webAppName string = 'app-helloweb-uwe'
 param resourceGroupName string = 'rgDemoHelloWeb' 
 param location string = 'westeurope'
 param sku string = 'S1'

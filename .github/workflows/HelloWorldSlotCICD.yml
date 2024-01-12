@@ -50,4 +50,4 @@ jobs:
       with:
         app-name: ${{ env.WEBAPP-NAME  }}
         slot-name: staging
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        package: ${{ env.WEBAPP_PACKAGE_PATH }}

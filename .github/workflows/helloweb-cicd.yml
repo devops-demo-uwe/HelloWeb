@@ -1,7 +1,7 @@
 name: Hello Web CI CD
 
 # Triggers
-on: [push, workflow_dispatch]
+#on: [push, workflow_dispatch]
 
 # Environment variables 
 env:
